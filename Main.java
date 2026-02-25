@@ -8,14 +8,15 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int opcion = 0;
 
-        while (opcion != 5) {
+        while (opcion != 6) {
 
-            System.out.println("\n====== SISTEMA DE USUARIOS ======");
-            System.out.println("1. Agregar usuario");
-            System.out.println("2. Buscar usuario");
-            System.out.println("3. Modificar usuario");
-            System.out.println("4. Borrar usuario");
-            System.out.println("5. Salir");
+            System.out.println("\n====== SISTEMA DE CLIENTES Y PEDIDOS ======");
+            System.out.println("1. Registrar cliente");
+            System.out.println("2. Listar clientes");
+            System.out.println("3. Eliminar cliente ");
+            System.out.println("4. Registrar pedido");
+            System.out.println("5. Listar pedidos de un cliente");
+            System.out.println("6. Salir");
             System.out.print("Elija una opcion: ");
 
             opcion = sc.nextInt();
@@ -23,58 +24,90 @@ public class Main {
 
             try {
 
+                // 1. Registrar cliente
                 if (opcion == 1) {
 
-                    System.out.print("Ingrese ID: ");
+                    System.out.print("Ingrese ID del cliente: ");
                     int id = sc.nextInt();
                     sc.nextLine();
 
                     System.out.print("Ingrese nombre: ");
                     String nombre = sc.nextLine();
 
-                    System.out.print("Ingrese email: ");
-                    String email = sc.nextLine();
+                    System.out.print("Ingrese apellido: ");
+                    String apellido = sc.nextLine();
 
-                    Usuario nuevo = new Usuario(id, nombre, email);
-                    CRUD.crearUsuario(nuevo);
+                    System.out.print("Ingrese telefono: ");
+                    String telefono = sc.nextLine();
 
-                } else if (opcion == 2) {
+                    Cliente nuevo = new Cliente(id, nombre, apellido, telefono, 1);
+                    CRUDClientes.registrarCliente(nuevo);
 
-                    System.out.print("Ingrese ID a buscar: ");
-                    int idBuscar = sc.nextInt();
-                    sc.nextLine();
+                }
 
-                    CRUD.leerUsuario(idBuscar);
+                // 2. Listar clientes
+                else if (opcion == 2) {
 
-                } else if (opcion == 3) {
+                    CRUDClientes.listarClientes();
 
-                    System.out.print("Ingrese ID a actualizar: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
+                }
 
-                    System.out.print("Nuevo nombre: ");
-                    String nombre = sc.nextLine();
+                // 3. Eliminar cliente (lógico)
+                else if (opcion == 3) {
 
-                    System.out.print("Nuevo email: ");
-                    String email = sc.nextLine();
-
-                    Usuario actualizado = new Usuario(id, nombre, email);
-                    CRUD.actualizarUsuario(actualizado);
-
-                } else if (opcion == 4) {
-
-                    System.out.print("Ingrese ID a eliminar: ");
+                    System.out.print("Ingrese ID del cliente a eliminar: ");
                     int idEliminar = sc.nextInt();
                     sc.nextLine();
 
-                    CRUD.eliminarUsuario(idEliminar);
+                    CRUDClientes.eliminarCliente(idEliminar);
 
-                } else if (opcion == 5) {
+                }
 
-                    System.out.println("Programa finalizado.");
+                // 4. Registrar pedido
+                else if (opcion == 4) {
 
-                } else {
+                    System.out.print("Ingrese ID del pedido: ");
+                    int idPedido = sc.nextInt();
+                    sc.nextLine();
 
+                    System.out.print("Ingrese ID del cliente: ");
+                    int idCliente = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.print("Ingrese nombre del producto: ");
+                    String producto = sc.nextLine();
+
+                    System.out.print("Ingrese precio (opcional, 0 si no aplica): ");
+                    double precio = sc.nextDouble();
+
+                    System.out.print("Ingrese cantidad (opcional, 0 si no aplica): ");
+                    int cantidad = sc.nextInt();
+                    sc.nextLine();
+
+                    Pedido nuevoPedido = new Pedido(idPedido, idCliente, producto, precio, cantidad, 1);
+                    CRUDPedidos.registrarPedido(nuevoPedido);
+
+                }
+
+                // 5. Listar pedidos de un cliente
+                else if (opcion == 5) {
+
+                    System.out.print("Ingrese ID del cliente: ");
+                    int idCliente = sc.nextInt();
+                    sc.nextLine();
+
+                    CRUDPedidos.listarPedidosPorCliente(idCliente);
+
+                }
+
+                // 6. Salir
+                else if (opcion == 6) {
+
+                    System.out.println("Programa finalizado correctamente.");
+
+                }
+
+                else {
                     System.out.println("Opcion no valida.");
                 }
 
