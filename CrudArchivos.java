@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class CrudArchivos {
 
     public static void crearUsuario(Usuario usuario) throws IOException {
-    FileWriter fw = new FileWriter("usuarios.txt", true);
+    FileWriter fw = new FileWriter("usuarios.csv", true);
     BufferedWriter bw = new BufferedWriter(fw);
     bw.write(usuario.toString());
     bw.newLine();

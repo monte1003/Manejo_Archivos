@@ -14,7 +14,7 @@ public class Main{
                 System.out.println("Email: ");
                 String email = sc.nextLine();
                 try{
-                     CrudArchivos.crearUsuario(new Usuario(id, nombre, email));
+                    CrudArchivos.crearUsuario(new Usuario(id, nombre, email));
                 }catch(Exception e){
                     System.out.println(e.getMessage());
                 }
