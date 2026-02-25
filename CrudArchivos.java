@@ -1,66 +1,86 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class CrudArchivos {
 
-    public static void crearUsuario(Usuario usuario) throws IOException {
-    FileWriter fw = new FileWriter("usuarios.csv", true);
-    BufferedWriter bw = new BufferedWriter(fw);
-    bw.write(usuario.toString());
-    bw.newLine();
-    bw.close();
-    }
+    private static final String ARCHIVO_CLIENTES = "clientes.csv";
+    private static final String ARCHIVO_PEDIDOS = "pedidos.csv";
 
-    public static List<Usuario> leerUsuarios() throws IOException {
-    List<Usuario> lista = new ArrayList<>();
-    Scanner sc = new Scanner(new File("usuarios.txt"));
-
-    while (sc.hasNextLine()) {
-        String[] datos = sc.nextLine().split(",");
-        lista.add(new Usuario(
-            Integer.parseInt(datos[0]),
-            datos[1],
-            datos[2]));
-    }
-    sc.close();
-    return lista;
-    }
-
-    public static void actualizarUsuario(int id, String nuevoNombre, String nuevoEmail) throws IOException {
-
-    List<Usuario> lista = leerUsuarios();
-    BufferedWriter bw = 
-        new BufferedWriter(new FileWriter("usuarios.txt"));
-
-    for (Usuario u : lista) {
-        if (u.getId() == id) {
-            u.setNombre(nuevoNombre);
-            u.setEmail(nuevoEmail);
-        }
-        bw.write(u.toString());
+    public static void registrarCliente(Usuario cliente) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CLIENTES, true));
+        bw.write(cliente.toCSVCliente());
         bw.newLine();
+        bw.close();
     }
-    bw.close();
+
+    public static void listarClientes() throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_CLIENTES));
+        String linea;
+
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+
+            if (datos[4].equals("1")) {
+                System.out.println("ID: " + datos[0] +
+                        " | Nombre: " + datos[1] +
+                        " " + datos[2] +
+                        " | Tel: " + datos[3]);
+            }
+        }
+        br.close();
     }
 
-    public static void eliminarUsuario(int id) 
-throws IOException {
+    public static void eliminarCliente(int id) throws IOException {
 
-    List<Usuario> lista = leerUsuarios();
-    BufferedWriter bw = 
-        new BufferedWriter(new FileWriter("usuarios.txt"));
+        List<String> lineas = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_CLIENTES));
+        String linea;
 
-    for (Usuario u : lista) {
-        if (u.getId() != id) {
-            bw.write(u.toString());
+        while ((linea = br.readLine()) != null) {
+
+            String[] datos = linea.split(",");
+
+            if (Integer.parseInt(datos[0]) == id) {
+                datos[4] = "0";
+                linea = String.join(",", datos);
+            }
+
+            lineas.add(linea);
+        }
+        br.close();
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CLIENTES));
+        for (String l : lineas) {
+            bw.write(l);
             bw.newLine();
         }
+        bw.close();
     }
-    bw.close();
-}
+
+    public static void registrarPedido(Usuario pedido) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_PEDIDOS, true));
+        bw.write(pedido.toCSVPedido());
+        bw.newLine();
+        bw.close();
+    }
+
+    public static void listarPedidosPorCliente(int id_cliente) throws IOException {
+
+        BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_PEDIDOS));
+        String linea;
+
+        while ((linea = br.readLine()) != null) {
+
+            String[] datos = linea.split(",");
+
+            if (Integer.parseInt(datos[1]) == id_cliente && datos[5].equals("1")) {
+
+                System.out.println("Pedido: " + datos[0] +
+                        " | Producto: " + datos[2] +
+                        " | Precio: " + datos[3] +
+                        " | Cantidad: " + datos[4]);
+            }
+        }
+        br.close();
+    }
 }
