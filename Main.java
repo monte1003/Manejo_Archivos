@@ -1,63 +1,88 @@
+import java.io.IOException;
 import java.util.Scanner;
-public class Main{
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Menú de opciones\n1) Crear usuario\n2) Leer usuarios\n3) Actualizar usuarios\n4) Eliminar Usuarios\n5)Salir\nIntroduzca la opción");
-        int op = sc.nextInt();
-        switch (op) {
-            case 1:
-                System.out.println("Id:");
-                int id = sc.nextInt();
-                sc.nextLine();
-                System.out.println("Nombre: ");
-                String nombre = sc.nextLine();
-                System.out.println("Email: ");
-                String email = sc.nextLine();
-                try{
-                     CrudArchivos.crearUsuario(new Usuario(id, nombre, email));
-                }catch(Exception e){
-                    System.out.println(e.getMessage());
-                }
-               
-                break;
-            case 2:
-                try{
-                    CrudArchivos.leerUsuarios();
-                }
-                catch(Exception e){
-                    System.out.println(e.getMessage());
-                }
-                break;
-            case 3:
-                System.out.println("Id del archivo a actualizar:"); 
-                id = sc.nextInt();
-                System.out.println("Nombre actualizar: ");
-                nombre = sc.nextLine();
-                System.out.println("Email actualizar: ");
-                email = sc.nextLine();
-                try{
-                    CrudArchivos.actualizarUsuario(id, nombre, email);
-                }
-                catch(Exception e){
-                    System.out.println(e.getMessage());
-                }
-                break;
-            case 4:
-                System.out.println("Id del archivo a eliminar: "); 
-                id = sc.nextInt();
-                try{
-                    CrudArchivos.eliminarUsuario(id);
-                }
-                catch(Exception e){
-                    System.out.println(e.getMessage());
-                }
-                break;
-            case 5:
 
-                break;
-            default:
-                break;
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int opcion = 0;
+
+        while (opcion != 5) {
+
+            System.out.println("\n====== SISTEMA DE USUARIOS ======");
+            System.out.println("1. Agregar usuario");
+            System.out.println("2. Buscar usuario");
+            System.out.println("3. Modificar usuario");
+            System.out.println("4. Borrar usuario");
+            System.out.println("5. Salir");
+            System.out.print("Elija una opcion: ");
+
+            opcion = sc.nextInt();
+            sc.nextLine();
+
+            try {
+
+                if (opcion == 1) {
+
+                    System.out.print("Ingrese ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.print("Ingrese nombre: ");
+                    String nombre = sc.nextLine();
+
+                    System.out.print("Ingrese email: ");
+                    String email = sc.nextLine();
+
+                    Usuario nuevo = new Usuario(id, nombre, email);
+                    CRUD.crearUsuario(nuevo);
+
+                } else if (opcion == 2) {
+
+                    System.out.print("Ingrese ID a buscar: ");
+                    int idBuscar = sc.nextInt();
+                    sc.nextLine();
+
+                    CRUD.leerUsuario(idBuscar);
+
+                } else if (opcion == 3) {
+
+                    System.out.print("Ingrese ID a actualizar: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.print("Nuevo nombre: ");
+                    String nombre = sc.nextLine();
+
+                    System.out.print("Nuevo email: ");
+                    String email = sc.nextLine();
+
+                    Usuario actualizado = new Usuario(id, nombre, email);
+                    CRUD.actualizarUsuario(actualizado);
+
+                } else if (opcion == 4) {
+
+                    System.out.print("Ingrese ID a eliminar: ");
+                    int idEliminar = sc.nextInt();
+                    sc.nextLine();
+
+                    CRUD.eliminarUsuario(idEliminar);
+
+                } else if (opcion == 5) {
+
+                    System.out.println("Programa finalizado.");
+
+                } else {
+
+                    System.out.println("Opcion no valida.");
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
         }
+
         sc.close();
-    }    
+    }
 }
