@@ -18,7 +18,7 @@ public class CrudArchivos {
 
     public static List<Usuario> leerUsuarios() throws IOException {
     List<Usuario> lista = new ArrayList<>();
-    Scanner sc = new Scanner(new File("usuarios.txt"));
+    Scanner sc = new Scanner(new File("clientes.csv"));
 
     while (sc.hasNextLine()) {
         String[] datos = sc.nextLine().split(",");
@@ -35,7 +35,7 @@ public class CrudArchivos {
 
     List<Usuario> lista = leerUsuarios();
     BufferedWriter bw = 
-        new BufferedWriter(new FileWriter("usuarios.txt"));
+        new BufferedWriter(new FileWriter("clientes.csv"));
 
     for (Usuario u : lista) {
         if (u.getId() == id) {
@@ -53,7 +53,7 @@ throws IOException {
 
     List<Usuario> lista = leerUsuarios();
     BufferedWriter bw = 
-        new BufferedWriter(new FileWriter("usuarios.txt"));
+        new BufferedWriter(new FileWriter("clientes.csv"));
 
     for (Usuario u : lista) {
         if (u.getId() != id) {
