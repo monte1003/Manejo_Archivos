@@ -1,109 +1,95 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-
-public class Main {
-
-    public static void main(String[] args) {
-
+public class Main{
+    public static void main(String [] args){
+        int id;String nombre;String apellido;int telefono;int activo;
+        int id_pedido; String producto; float precio; int cantidad; int activo_pedido;
+        int n = 0;
+        List<Usuario> lista = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
-        int opcion = 0;
-
-        while (opcion != 6) {
-
-            System.out.println("\n====== SISTEMA DE CLIENTES Y PEDIDOS ======");
-            System.out.println("1. Registrar cliente");
-            System.out.println("2. Listar clientes");
-            System.out.println("3. Eliminar cliente");
-            System.out.println("4. Registrar pedido");
-            System.out.println("5. Listar pedidos de un cliente");
-            System.out.println("6. Salir");
-            System.out.print("Elija una opcion: ");
-
-            opcion = sc.nextInt();
-            sc.nextLine();
-
-            try {
-
-                if (opcion == 1) {
-
-                    System.out.print("Ingrese ID del cliente: ");
-                    int id = sc.nextInt();
+        do{
+            System.out.println("Menú de opciones\n1) Registrar un cliente\n2) Listar clientes\n3) Eliminar un cliente\n4) Registrar un pedido\n5) Listar pedidos de un cliente\n6) Salir\nIntroduzca la opción");
+            int op;
+            op = sc.nextInt();
+            switch (op) {
+                case 1:
+                        System.out.println("Ingrese id del usuario: ");
+                        id = sc.nextInt();
+                        sc.nextLine();
+                        System.out.println("Ingrese nombre: ");
+                        nombre = sc.nextLine();
+                        System.out.println("Ingrese apellido: ");
+                        apellido = sc.nextLine();
+                        System.out.println("Ingrese teléfono:");
+                        telefono = sc.nextInt();
+                        System.out.println("Ingrese si esta activo o no: ");
+                        activo = sc.nextInt();
+                        try{
+                            CrudArchivos.crearUsuario(new Usuario(id, nombre, apellido, telefono, activo));
+                        }
+                        catch (IOException e){
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    break;
+                case 2:
+                    try{
+                        lista = CrudArchivos.leerUsuarios();
+                        System.out.println(lista);
+                    }
+                    catch (IOException e){
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+                case 3:
+                    System.out.println("Introduzca el id del usuario a eliminar");
+                    id = sc.nextInt();
+                    try{
+                        CrudArchivos.eliminarUsuario(id);
+                    }
+                    catch (IOException e){
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+                case 4:
+                    System.out.println("Ingrese id del pedido: ");
+                    id_pedido = sc.nextInt();
+                    System.out.println("Ingrese id del usuario: ");
+                    id = sc.nextInt();
                     sc.nextLine();
-
-                    System.out.print("Ingrese nombre: ");
-                    String nombre = sc.nextLine();
-
-                    System.out.print("Ingrese apellido: ");
-                    String apellido = sc.nextLine();
-
-                    System.out.print("Ingrese telefono: ");
-                    String telefono = sc.nextLine();
-
-                    Usuario nuevoCliente = new Usuario(id, nombre, apellido, telefono, 1);
-                    CrudArchivos.registrarCliente(nuevoCliente);
-                }
-
-                else if (opcion == 2) {
-
-                    CrudArchivos.listarClientes();
-                }
-
-                else if (opcion == 3) {
-
-                    System.out.print("Ingrese ID del cliente a eliminar: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-
-                    CrudArchivos.eliminarCliente(id);
-                }
-
-                else if (opcion == 4) {
-
-                    System.out.print("Ingrese ID del pedido: ");
-                    int id_pedido = sc.nextInt();
-                    sc.nextLine();
-
-                    System.out.print("Ingrese ID del cliente: ");
-                    int id_cliente = sc.nextInt();
-                    sc.nextLine();
-
-                    System.out.print("Ingrese nombre del producto: ");
-                    String producto = sc.nextLine();
-
-                    System.out.print("Ingrese precio (0 si no aplica): ");
-                    double precio = sc.nextDouble();
-
-                    System.out.print("Ingrese cantidad (0 si no aplica): ");
-                    int cantidad = sc.nextInt();
-                    sc.nextLine();
-
-                    Usuario nuevoPedido = new Usuario(id_pedido, id_cliente, producto, precio, cantidad, 1);
-                    CrudArchivos.registrarPedido(nuevoPedido);
-                }
-
-                else if (opcion == 5) {
-
-                    System.out.print("Ingrese ID del cliente: ");
-                    int id_cliente = sc.nextInt();
-                    sc.nextLine();
-
-                    CrudArchivos.listarPedidosPorCliente(id_cliente);
-                }
-
-                else if (opcion == 6) {
-
-                    System.out.println("Programa finalizado correctamente.");
-                }
-
-                else {
-                    System.out.println("Opcion no valida.");
-                }
-
-            } catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
+                    System.out.println("Ingrese producto: ");
+                    producto = sc.nextLine();
+                    System.out.println("Ingrese precio: ");
+                    precio = sc.nextFloat();
+                    System.out.println("Ingrese cantidad:");
+                    cantidad = sc.nextInt();
+                    System.out.println("Ingrese si esta activo o no: ");
+                    activo_pedido = sc.nextInt();
+                    try{
+                        CrudArchivos.registrarPedido(new Pedido(id_pedido, id, producto, precio, cantidad, activo_pedido));
+                    }
+                    catch (IOException e){
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+                case 5:
+                    System.out.println("Ingrese el id del cliente: ");
+                    id = sc.nextInt();
+                    try{
+                        CrudArchivos.listarPedido(id);
+                    }
+                    catch (IOException e){
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+                case 6:
+                    n = 1;
+                default:
+                    break;
             }
         }
-
+        while (n == 0);
         sc.close();
     }
 }
