@@ -19,16 +19,18 @@ public class Main {
             System.out.println("6. Salir");
             System.out.print("Elija una opcion: ");
 
-            opcion = sc.nextInt();
-            sc.nextLine();
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Debe ingresar un número válido.");
+                opcion = 0;
+            }
 
             try {
 
                 if (opcion == 1) {
 
-                    System.out.print("Ingrese ID del cliente: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
+                    int id = leerEntero(sc, "Ingrese ID del cliente: ");
 
                     System.out.print("Ingrese nombre: ");
                     String nombre = sc.nextLine();
@@ -36,62 +38,42 @@ public class Main {
                     System.out.print("Ingrese apellido: ");
                     String apellido = sc.nextLine();
 
-                    System.out.print("Ingrese telefono: ");
-                    String telefono = sc.nextLine();
+                    long telefono = leerLong(sc, "Ingrese telefono: ");
 
                     Usuario nuevoCliente = new Usuario(id, nombre, apellido, telefono, 1);
                     CrudArchivos.registrarCliente(nuevoCliente);
                 }
 
                 else if (opcion == 2) {
-
                     CrudArchivos.listarClientes();
                 }
 
                 else if (opcion == 3) {
-
-                    System.out.print("Ingrese ID del cliente a eliminar: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-
+                    int id = leerEntero(sc, "Ingrese ID del cliente a eliminar: ");
                     CrudArchivos.eliminarCliente(id);
                 }
 
                 else if (opcion == 4) {
 
-                    System.out.print("Ingrese ID del pedido: ");
-                    int id_pedido = sc.nextInt();
-                    sc.nextLine();
-
-                    System.out.print("Ingrese ID del cliente: ");
-                    int id_cliente = sc.nextInt();
-                    sc.nextLine();
+                    int id_pedido = leerEntero(sc, "Ingrese ID del pedido: ");
+                    int id_cliente = leerEntero(sc, "Ingrese ID del cliente: ");
 
                     System.out.print("Ingrese nombre del producto: ");
                     String producto = sc.nextLine();
 
-                    System.out.print("Ingrese precio (0 si no aplica): ");
-                    double precio = sc.nextDouble();
-
-                    System.out.print("Ingrese cantidad (0 si no aplica): ");
-                    int cantidad = sc.nextInt();
-                    sc.nextLine();
+                    double precio = leerDouble(sc, "Ingrese precio: ");
+                    int cantidad = leerEntero(sc, "Ingrese cantidad: ");
 
                     Usuario nuevoPedido = new Usuario(id_pedido, id_cliente, producto, precio, cantidad, 1);
                     CrudArchivos.registrarPedido(nuevoPedido);
                 }
 
                 else if (opcion == 5) {
-
-                    System.out.print("Ingrese ID del cliente: ");
-                    int id_cliente = sc.nextInt();
-                    sc.nextLine();
-
+                    int id_cliente = leerEntero(sc, "Ingrese ID del cliente: ");
                     CrudArchivos.listarPedidosPorCliente(id_cliente);
                 }
 
                 else if (opcion == 6) {
-
                     System.out.println("Programa finalizado correctamente.");
                 }
 
@@ -100,10 +82,43 @@ public class Main {
                 }
 
             } catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("Error de archivo: " + e.getMessage());
             }
         }
 
         sc.close();
+    }
+
+    public static int leerEntero(Scanner sc, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            try {
+                return Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Debe ingresar un numero entero valido.");
+            }
+        }
+    }
+
+    public static double leerDouble(Scanner sc, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            try {
+                return Double.parseDouble(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Debe ingresar un numero decimal valido.");
+            }
+        }
+    }
+
+    public static long leerLong(Scanner sc, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            try {
+                return Long.parseLong(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Debe ingresar un numero valido.");
+            }
+        }
     }
 }
