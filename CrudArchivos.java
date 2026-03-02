@@ -1,66 +1,118 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
 
-public class CrudArchivos {
+public class CRUD {
 
+    private static final String FILE_NAME = "usuarios.txt";
+
+    // CREATE
     public static void crearUsuario(Usuario usuario) throws IOException {
-    FileWriter fw = new FileWriter("usuarios.txt", true);
-    BufferedWriter bw = new BufferedWriter(fw);
-    bw.write(usuario.toString());
-    bw.newLine();
-    bw.close();
-    }
-
-    public static List<Usuario> leerUsuarios() throws IOException {
-    List<Usuario> lista = new ArrayList<>();
-    Scanner sc = new Scanner(new File("usuarios.txt"));
-
-    while (sc.hasNextLine()) {
-        String[] datos = sc.nextLine().split(",");
-        lista.add(new Usuario(
-            Integer.parseInt(datos[0]),
-            datos[1],
-            datos[2]));
-    }
-    sc.close();
-    return lista;
-    }
-
-    public static void actualizarUsuario(int id, String nuevoNombre, String nuevoEmail) throws IOException {
-
-    List<Usuario> lista = leerUsuarios();
-    BufferedWriter bw = 
-        new BufferedWriter(new FileWriter("usuarios.txt"));
-
-    for (Usuario u : lista) {
-        if (u.getId() == id) {
-            u.setNombre(nuevoNombre);
-            u.setEmail(nuevoEmail);
-        }
-        bw.write(u.toString());
+        FileWriter fw = new FileWriter(FILE_NAME, true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(usuario.toString());
         bw.newLine();
+        bw.close();
+        System.out.println("Usuario creado exitosamente.");
     }
-    bw.close();
-    }
 
-    public static void eliminarUsuario(int id) 
-throws IOException {
+    // READ
+    public static void leerUsuario(int id) throws IOException {
+        File file = new File(FILE_NAME);
 
-    List<Usuario> lista = leerUsuarios();
-    BufferedWriter bw = 
-        new BufferedWriter(new FileWriter("usuarios.txt"));
+        if (!file.exists()) {
+            System.out.println("No existen usuarios registrados.");
+            return;
+        }
 
-    for (Usuario u : lista) {
-        if (u.getId() != id) {
-            bw.write(u.toString());
-            bw.newLine();
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String linea;
+        boolean encontrado = false;
+
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+            if (Integer.parseInt(datos[0]) == id) {
+                System.out.println("Usuario encontrado: " + linea);
+                encontrado = true;
+                break;
+            }
+        }
+
+        br.close();
+
+        if (!encontrado) {
+            System.out.println("Usuario no encontrado.");
         }
     }
-    bw.close();
-}
+
+    // UPDATE
+    public static void actualizarUsuario(Usuario usuarioActualizado) throws IOException {
+        File file = new File(FILE_NAME);
+
+        if (!file.exists()) {
+            System.out.println("No existen usuarios registrados.");
+            return;
+        }
+
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String linea;
+        StringBuilder sb = new StringBuilder();
+        boolean actualizado = false;
+
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+            if (Integer.parseInt(datos[0]) == usuarioActualizado.getId()) {
+                sb.append(usuarioActualizado.toString()).append("\n");
+                actualizado = true;
+            } else {
+                sb.append(linea).append("\n");
+            }
+        }
+
+        br.close();
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+        bw.write(sb.toString());
+        bw.close();
+
+        if (actualizado) {
+            System.out.println("Usuario actualizado exitosamente.");
+        } else {
+            System.out.println("Usuario no encontrado.");
+        }
+    }
+
+    // DELETE
+    public static void eliminarUsuario(int id) throws IOException {
+        File file = new File(FILE_NAME);
+
+        if (!file.exists()) {
+            System.out.println("No existen usuarios registrados.");
+            return;
+        }
+
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String linea;
+        StringBuilder sb = new StringBuilder();
+        boolean eliminado = false;
+
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+            if (Integer.parseInt(datos[0]) == id) {
+                eliminado = true;
+            } else {
+                sb.append(linea).append("\n");
+            }
+        }
+
+        br.close();
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+        bw.write(sb.toString());
+        bw.close();
+
+        if (eliminado) {
+            System.out.println("Usuario eliminado exitosamente.");
+        } else {
+            System.out.println("Usuario no encontrado.");
+        }
+    }
 }
