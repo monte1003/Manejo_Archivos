@@ -13,7 +13,7 @@ public class Main {
             System.out.println("\n====== SISTEMA DE CLIENTES Y PEDIDOS ======");
             System.out.println("1. Registrar cliente");
             System.out.println("2. Listar clientes");
-            System.out.println("3. Eliminar cliente");
+            System.out.println("3. Eliminar cliente ");
             System.out.println("4. Registrar pedido");
             System.out.println("5. Listar pedidos de un cliente");
             System.out.println("6. Salir");

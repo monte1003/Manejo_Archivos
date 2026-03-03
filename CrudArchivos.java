@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class CrudArchivos {
+public class CRUD {
 
     private static final String ARCHIVO_CLIENTES = "clientes.csv";
     private static final String ARCHIVO_PEDIDOS = "pedidos.csv";
