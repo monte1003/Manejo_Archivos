@@ -1,21 +1,12 @@
 public class Usuario {
 
-    /*
-     * =========================
-     * ATRIBUTOS CLIENTE
-     * ==========================
-     */
     private int id;
     private String nombre;
     private String apellido;
     private long telefono;
     private int activo;
 
-    /*
-     * =========================
-     * ATRIBUTOS PEDIDO
-     * ==========================
-     */
+
     private int id_pedido;
     private int id_cliente;
     private String producto;
@@ -30,8 +21,7 @@ public class Usuario {
         this.activo = activo;
     }
 
-    public Usuario(int id_pedido, int id_cliente, String producto,
-            double precio, int cantidad, int activo) {
+    public Usuario(int id_pedido, int id_cliente, String producto, double precio, int cantidad, int activo) {
         this.id_pedido = id_pedido;
         this.id_cliente = id_cliente;
         this.producto = producto;
@@ -61,7 +51,6 @@ public class Usuario {
     }
 
     public String toCSVPedido() {
-        return id_pedido + "," + id_cliente + "," + producto + "," +
-                precio + "," + cantidad + "," + activo;
+        return id_pedido + "," + id_cliente + "," + producto + "," + precio + "," + cantidad + "," + activo;
     }
 }
