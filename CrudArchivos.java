@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class CRUD {
+public class CrudArchivos {
 
     private static final String ARCHIVO_CLIENTES = "clientes.csv";
     private static final String ARCHIVO_PEDIDOS = "pedidos.csv";
@@ -12,7 +12,6 @@ public class CRUD {
         bw.write(cliente.toCSVCliente());
         bw.newLine();
         bw.close();
-
         System.out.println("Cliente registrado correctamente.");
     }
 
@@ -175,8 +174,6 @@ public class CRUD {
                     }
                 }
 
-            } else {
-                System.out.println("Linea con formato invalido detectada en pedidos.csv (se mantiene la linea).");
             }
 
             lineas.add(linea);
